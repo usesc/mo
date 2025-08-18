@@ -1,0 +1,23 @@
+{
+  "files.associations": {
+    "fcntl.h": "c",
+    "stdio.h": "c",
+    "assert.h": "c",
+    "immintrin.h": "c",
+    "mmintrin.h": "c",
+    "bit": "c",
+    "concepts": "c",
+    "cstdio": "c",
+    "cwchar": "c",
+    "type_traits": "c",
+    "new": "c",
+    "typeinfo": "c",
+    "stat.h": "c",
+    "xmmintrin.h": "c",
+    "x86gprintrin.h": "c",
+    "stdint.h": "c",
+    "unistd.h": "c",
+    "vi_line.h": "c",
+    "vi_core.h": "c"
+  }
+}

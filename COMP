@@ -1,0 +1,4 @@
+LFLAGS = -Iinc -lpthread
+CFLAGS = -O3 -march=native -mavx2 -msse2
+SOURCE = src/vi_core.c src/vi_line.c src/vi.vi_core
+

@@ -1,0 +1,58 @@
+via
+vi ascended
+visual ascended
+
+mo
+modal
+modal editor
+
+md
+modal
+modal editor
+
+watch uzaki chan wants to hang out
+or watch advanced C course on youtube
+- the classic c programmers dilemma 
+
+wanted features:
+generate a hash of the whole file: MD5, SHA256, SHA512
+real encryption 
+compression
+eol skip via key combo or something, useful
+delete whole word
+delete line
+splash screen 
+
+int skip_eol(char *a)
+  use memchr to find first newline 
+  occurence, position specifically
+
+horizontal cursor position:
+count how many characters you 
+are out from the last newline 
+(only fire on up down movements)
+
+vertical cursor position:
+count how many newlines there are
+from the start of the buffer to the
+end
+(only fire on up down movements)
+
+going up:
+if you go up to a line with less characters
+than the current horizontal position, then
+clamp the horizontal position to the line, 
+and vice versa
+
+check if file has lines longer than 65536 bytes
+if no - line lengths are u shorts
+if yes - line lengths are u ints
+
+modes:
+normal
+real terminal
+vi terminal
+insert
+
+VSCODE THEME:
+Monokai pro, filter: machine
