@@ -1,0 +1,5 @@
+git diff            (difference)
+git diff --stat     (easy difference)
+git status          (branch status)
+git checkout branch (change branch)
+
