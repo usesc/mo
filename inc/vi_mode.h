@@ -7,18 +7,17 @@ struct vi_normal_con {
   int qts; /* quit this session       */
 };
 
-
 /* vi insert controls */
 struct vi_insert_con {
-
+  int lcm; /* leave current mode */
 };
 
 /* vi real terminal controls */
 struct vi_rterm_con {
-
+  int lcm; /* leave current mode */
 };
 
 /* vi editor terminal controls */
 struct vi_term_con {
-
+  int lcm; /* leave current mode */
 };
