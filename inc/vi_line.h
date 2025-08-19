@@ -17,6 +17,7 @@
 /* vi thread handler callback */
 typedef size_t (*vi_thc)(char *, size_t, char);
 
+__attribute__((aligned(64)))
 struct vi_td {
   char * chm; /* chunk memory   */
   size_t chs; /* chunk size     */
