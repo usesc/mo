@@ -112,6 +112,8 @@ compare offset address to the array of line pointers
 struct {
   size_t * lar; /* line sizes array */
   size_t   las; /* line sizes array size */
-  void  ** alp; /* array of line pointers */
-  size_t   als; /* array of line pointers size */
+  off_t    als; /* array of line starts */
+  size_t   lss; /* array of line starts size */
 }
+
+
