@@ -27,7 +27,7 @@
 
 /* vi television struct */
 struct vi_tv {
-	off_t  cso; /* cursor offset */
+	size_t cso; /* cursor offset */
 	size_t viy; /* viewport y    */
 	size_t teh; /* term height   */
 	size_t tew; /* term width    */
