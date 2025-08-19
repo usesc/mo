@@ -1,4 +1,3 @@
-
 /* vi normal mode controls */
 struct vi_normal_con {
   int sti; /* switch to insert        */
@@ -9,7 +8,9 @@ struct vi_normal_con {
 
 /* vi insert controls */
 struct vi_insert_con {
-  int lcm; /* leave current mode */
+  int lcm; /* leave current mode   */
+  int cel; /* clear to end of line */
+  int dlw; /* delete word */
 };
 
 /* vi real terminal controls */
