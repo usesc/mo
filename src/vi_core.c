@@ -126,3 +126,18 @@ off_t vi_dcl(const char *mem, off_t off) {
  	shift memory back where it belongs
  	*/
 }
+
+/* vi check if printable character */
+/* cha = char */
+static inline __attribute__((always_inline, hot))
+unsigned char vi_cip(char cha) {
+	if (cha >= 32 || cha <= 126) {
+		return 1; 
+	}
+	switch (cha) {
+		case 0x0A: return 1;
+		case 0x09: return 1;
+		default: return 0;
+	}
+	return 0;
+}
