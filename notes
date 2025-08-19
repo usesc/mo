@@ -56,3 +56,51 @@ insert
 
 VSCODE THEME:
 Monokai pro, filter: machine
+
+####
+VINOTES FROM IMA:
+####
+
+
+create an struct for editor controls for each mode
+initialize the struct based on configs and file data
+
+BUFFER IDEAS:
+char *buffer
+char *pos 
+OR
+char *buffer
+off_t pos
+(im thinking second, valid after realloc)
+
+struct controls_normal {
+  int d_l; /* delete */
+  int u_p; /* cursor up */
+}
+
+open(config, ORDONLY)
+/* use inih or some other config library here */
+
+INTERFACE IDEAS:
+ncurses - wide support, proven
+notcurses - fast, complicated
+termbox - simple, small, less features
+tuibox - more like a retained mode tui library
+vt100utils - utility for escape sequences
+
+struct vi_op {
+  off_t o; /* offset */
+  viu8  f; /* operation, as in DELETE or INSERT */
+  viu8  c; /* char */ 
+}
+
+UNDO REDO LOGIC:
+Stack based for each, 
+with dynamic growing and shrinking
+
+UNDO STACK
+REDO STACK
+LAST OPERATION
+
+
+if UNDO_KEY pressed 
