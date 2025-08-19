@@ -75,9 +75,19 @@ int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod) {
 /* vi free file */
 /* vif = vi file */
 void vi_freevif(struct vi_file *vif) {
-	free(vif->fim);
-	vif->fim = NULL;
-	close(vif->fid);
+  if (!vif) return;
+
+  if (vif->fim) {
+    free(vif->fim);
+    vif->fim = NULL;
+  }
+
+  if (vif->fid >= 0) {
+    close(vif->fid);
+    vif->fid = -1;
+  }
+
+  memset(vif, 0, sizeof(*vif));
 }
 
 /* vi increment until byte */
