@@ -116,4 +116,6 @@ struct {
   size_t   lss; /* array of line starts size */
 }
 
-
+do a binary search i guess:
+"To find the line you are currently in, you do a binary search on this array to find the greatest line start offset <= your current offset."
+(talking about the array of line starts) 
