@@ -14,11 +14,11 @@ struct vi_insert_con {
 };
 
 /* vi real terminal controls */
-struct vi_rterminal_con {
+struct vi_rterm_con {
 
 };
 
 /* vi editor terminal controls */
-struct vi_terminal_con {
+struct vi_term_con {
 
 };
