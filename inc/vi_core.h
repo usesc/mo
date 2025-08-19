@@ -49,8 +49,6 @@ typedef struct vi_file {
 	size_t f_l; /* file mem length */
 	viu8 * f_n; /* file name       */
 	size_t n_s; /* file name size  */
-	int  * l_a; /* line array off  */
-	size_t n_l; /* number of lines */
 	int    f_d; /* file descriptor */
 	stat_t s_t; /* struct stat     */
 } vi_file_t;
