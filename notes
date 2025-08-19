@@ -12,7 +12,7 @@ modal editor
 
 watch uzaki chan wants to hang out
 or watch advanced C course on youtube
-- the classic c programmers dilemma 
+- the classic c dilemma 
 
 wanted features:
 generate a hash of the whole file: MD5, SHA256, SHA512
@@ -107,3 +107,11 @@ if UNDO_KEY pressed
 
 
 ehh, get rid of the typedefs anyway it just makes it confusing
+
+compare offset address to the array of line pointers
+struct {
+  size_t * lar; /* line sizes array */
+  size_t   las; /* line sizes array size */
+  void  ** alp; /* array of line pointers */
+  size_t   als; /* array of line pointers size */
+}
