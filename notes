@@ -104,3 +104,6 @@ LAST OPERATION
 
 
 if UNDO_KEY pressed 
+
+
+ehh, get rid of the typedefs anyway it just makes it confusing

@@ -10,44 +10,44 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#include <vi_type.h>
 #include <vi_core.h>
 
 #define VI_DIMRET 4096
 
 /* vi thread handler callback */
-typedef size_t (*vi_thc)(viu8 *, size_t, viu8);
+typedef size_t (*vi_thc)(char *, size_t, char);
 
-typedef struct vi_td {
-  viu8 * c_m; /* chunk memory   */
-  size_t c_s; /* chunk size     */
-  size_t t_r; /* thread result  */
-  vi_thc c_h; /* countb handle  */
-  char   t_b; /* target byte    */
-} vi_td_t; 
+struct vi_td {
+  char * chm; /* chunk memory   */
+  size_t chs; /* chunk size     */
+  size_t trs; /* thread result  */
+  vi_thc cbh; /* countb handle  */
+  char   tgb; /* target byte    */
+};
 
-/* vi count byte - basic */
-#if VI_GCC_CLANG
-__attribute__((always_inline, hot))
-#endif
-static inline size_t vi_cnt_b(viu8 *h, size_t h_l, viu8 n);
+/* vi count byte, basic */
+/* mem = memory, mln = memory length, byt = byte */
+static inline __attribute__((always_inline, hot))
+size_t vi_ctb_bas(char *mem, size_t mln, char byt);
 
-/* vi count byte - sse2 */
-#if VI_GCC_CLANG
-__attribute__((always_inline, hot))
-static inline size_t vi_cnt_sse2(viu8 *h, size_t h_l, viu8 n);
-#endif
+/* vi count byte, sse2 */
+/* mem = memory, mln = memory length, byt = byte */
+static inline __attribute__((always_inline, hot))
+size_t vi_ctb_sse2(char *mem, size_t mln, char byt);
 
-/* vi count byte - avx2 */
-#if VI_GCC_CLANG
-__attribute__((always_inline, hot))
-static inline size_t vi_cnt_avx2(viu8 *h, size_t h_l, viu8 n);
-#endif
+/* vi count byte, avx2 */
+/* mem = memory, mln = memory length, byt = byte */
+static inline __attribute__((always_inline, hot))
+size_t vi_ctb_avx2(char *mem, size_t mln, char byt);
 
-/* vi multithread thread handler */
-void *vi_mt_th(void *a);
+/* vi pthread handler */
+/* a = pthread arg */
+void *vi_pth(void *a);
 
-/* vi count byte - USE THIS FUNCTION */
-size_t vi_cnt(viu8 *h, size_t h_l, viu8 n);
+/* vv use this function vv */
+
+/* vi count byte generalized */
+/* mem = memory, mln = memory length, byt = byte */
+size_t vi_ctb(char *mem, size_t mln, char byt);
 
 #endif

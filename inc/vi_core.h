@@ -8,23 +8,13 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#include <vi_type.h>
 #include <vi_line.h>
 
-#if defined(__clang__) || defined(__GNUC__)
-#define VI_GCC_CLANG 1
 #define vi_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
 #define vi_memmov(dest, src, n) __builtin_memmove(dest, src, n)
 #define vi_memset(s, c, n)      __builtin_memset(s, c, n)
 #define vi_strlen(s)            __builtin_strlen(s)
 #define vi_popcnt(a)            __builtin_popcount(a)
-#else
-#include <string.h>
-#define vi_memcpy(dest, src, n) memcpy(dest, src, n)
-#define vi_memmov(dest, src, n) memmove(dest, src, n)
-#define vi_memset(s, c, n)      memset(s, c, n)
-#define vi_strlen(s)            strlen(s)
-#endif
 
 #define VILOGERR 1
 #if VILOGERR
@@ -36,37 +26,49 @@
 #endif
 
 /* vi television struct */
-typedef struct vi_tv {
-	size_t c_o; /* cursor offset */
-	size_t v_y; /* viewport y    */
-	size_t t_h; /* term height   */
-	size_t t_w; /* term width    */
-} vi_tv_t;
+struct vi_tv {
+	off_t  cso; /* cursor offset */
+	size_t viy; /* viewport y    */
+	size_t teh; /* term height   */
+	size_t tew; /* term width    */
+};
 
 /* vi file struct */
-typedef struct vi_file {
-	viu8 * f_m; /* file memory     */
-	size_t f_l; /* file mem length */
-	viu8 * f_n; /* file name       */
-	size_t n_s; /* file name size  */
-	int    f_d; /* file descriptor */
-	stat_t s_t; /* struct stat     */
-} vi_file_t;
+struct vi_file {
+	char *      fim; /* file memory        */
+	size_t      fml; /* file memory length */
+	char *      fin; /* file name          */
+	size_t      fns; /* file name size     */
+	int         fid; /* file descriptor    */
+	struct stat sts; /* struct stat        */
+};
 
 /* vi insert */
-#if VI_GCC_CLANG 
-__attribute__((always_inline, hot))
-#endif
-static inline ssize_t vi_ins(viu8 *o, viui o_s, viu8 *i, viui i_s, viui p, viu8 c);
+/* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsigned int pos, char cha);
 
 /* vi delete */
-#if VI_GCC_CLANG 
-__attribute__((always_inline, hot))
-#endif
-static inline ssize_t vi_del(viu8 *o, viui o_s, viu8 *i, viui i_s, viui p);
+/* out = output, inp = input, ins = input size, pos = position */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_delete(char *out, char *inp, unsigned int ins, unsigned int pos);
 
-vist vi_if(vi_file_t *vf, viu8 *f, int fl, mode_t m);
+/* vi init vi file */
+/* vif = vi file, fin = filename, fla = flags, mod = mode */
+int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod);
 
-void vi_ff(vi_file_t *vf);
+/* vi free file */
+/* vif = vi file */
+void vi_freevif(struct vi_file *vif);
+
+/* vi increment until byte */
+/* mem = memory, mln = memory length, cha = char */
+static inline __attribute__((always_inline, hot))
+off_t vi_iub(const char *mem, size_t mln, char cha);
+
+/* vi decrement until byte */
+/* mem = memory, off = memory offset, cha = char */
+static inline __attribute__((always_inline, hot))
+off_t vi_dub(const char *mem, off_t off, char cha);
 
 #endif

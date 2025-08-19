@@ -1,6 +1,6 @@
 COMPIL = gcc
 CFLAGS = -O3 -mavx2 -msse2 -Iinc
-LFLAGS = -lpthread
+LFLAGS = -lpthread -Iinc
 SOURCE = vi_core.c vi_line.c vi.c
 OBJECS = $(SOURCE:.c=.o)
 OUTPUT = vi

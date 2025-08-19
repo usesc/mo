@@ -1,72 +1,71 @@
 #include <vi_core.h>
 
 /* vi insert */
-#if VI_GCC_CLANG 
-__attribute__((always_inline, hot))
-#endif
-static inline ssize_t vi_ins(viu8 *o, viui o_s, viu8 *i, viui i_s, viui p, viu8 c) {
-	vi_assert(o != NULL);
-	vi_assert(i != NULL);
-	vi_assert(p <= i_s);
-	vi_assert(i_s+1 <= o_s);
+/* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsigned int pos, char cha) {
+	vi_assert(out != NULL);
+	vi_assert(inp != NULL);
+	vi_assert(pos <= ins);
+	vi_assert(ins+1 <= ous);
 
-	if (p > i_s || i_s+1 > o_s) return -1; 
+	if (pos > ins || ins+1 > ous) return -1;
 
-	if (o != i) vi_memcpy(o, i, i_s);
-	vi_memmov(o+p+1, o+p, i_s-p);
+	if (out != inp) vi_memcpy(out, inp, ins);
+	vi_memmov(out+pos+1, out+pos, ins-pos);
 	
-	o[p] = c;
-	return i_s+1;
+	out[pos] = cha;
+	return ins+1;
 }
 
 /* vi delete */
-#if VI_GCC_CLANG 
-__attribute__((always_inline, hot))
-#endif
-static inline ssize_t vi_del(viu8 *o, viui o_s, viu8 *i, viui i_s, viui p) {
-	vi_assert(o != NULL);
-  vi_assert(i != NULL);
-  vi_assert(p < i_s);
+/* out = output, inp = input, ins = input size, pos = position */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_delete(char *out, char *inp, unsigned int ins, unsigned int pos) {
+	vi_assert(out != NULL);
+  vi_assert(inp != NULL);
+  vi_assert(pos < ins);
 
-	if (p >= i_s) return -1; 
+	if (pos >= ins) return -1; 
 
-	if (o != i) vi_memcpy(o, i, i_s);
-	vi_memmov(o+p, o+p+1, i_s-p-1);
+	if (out != inp) vi_memcpy(out, inp, ins);
+	vi_memmov(out+pos, out+pos+1, ins-pos-1);
 	
-	return i_s-1;
+	return ins-1;
 }
 
-/* vi init file */
-vist vi_if(vi_file_t *vf, viu8 *f, int fl, mode_t m) {
-	vf->f_n = f;
-	vf->n_s = vi_strlen(f);
+/* vi init vi file */
+/* vif = vi file, fin = filename, fla = flags, mod = mode */
+int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod) {
+	vif->fin = fin;
+	vif->fns = vi_strlen(fin);
 
-	vf->f_d = open(f, fl, m);
-	if (vf->f_d  == -1) {
+	vif->fid = open(fin, fla, mod);
+	if (vif->fid  == -1) {
 		vi_errors("open");
 		return -1;
 	}
 
-	if (fstat(vf->f_d , &vf->s_t) == -1) {
+	if (fstat(vif->fid , &vif->sts) == -1) {
 		vi_errors("fstat");
-		close(vf->f_d);
+		close(vif->fid);
 		return -1;
 	}
 
-	vf->f_l = vf->s_t.st_size;
+	vif->fml = vif->sts.st_size;
 
-	vf->f_m = malloc(vf->f_l);
-	if (!vf->f_m) {
+	vif->fim = malloc(vif->fml);
+	if (!vif->fim) {
 		vi_errors("malloc");
-		close(vf->f_d);
+		close(vif->fid);
 		return -1;
 	}
 
-	ssize_t n = read(vf->f_d, vf->f_m, vf->f_l);
-	if (n != vf->f_l) {
+	ssize_t n = read(vif->fid, vif->fim, vif->fml);
+	if (n != vif->fml) {
 		vi_errors("read");
-		close(vf->f_d);
-		free(vf->f_m);
+		close(vif->fid);
+		free(vif->fim);
 		return -1;
 	}
 	
@@ -74,8 +73,29 @@ vist vi_if(vi_file_t *vf, viu8 *f, int fl, mode_t m) {
 }
 
 /* vi free file */
-void vi_ff(vi_file_t *vf) {
-	free(vf->f_m);
-	vf->f_m = NULL;
-	close(vf->f_d);
+/* vif = vi file */
+void vi_freevif(struct vi_file *vif) {
+	free(vif->fim);
+	vif->fim = NULL;
+	close(vif->fid);
+}
+
+/* vi increment until byte */
+/* mem = memory, mln = length, cha = char */
+static inline __attribute__((always_inline, hot))
+off_t vi_iub(const char *mem, size_t mln, char cha) {
+  for (off_t i = 0; i < mln; i++) {
+    if (mem[i] == cha) return i;
+  }
+  return -1; 
+}
+
+/* vi decrement until byte */
+/* mem = memory, off = offset, cha = char */
+static inline __attribute__((always_inline, hot))
+off_t vi_dub(const char *mem, off_t off, char cha) {
+  for (off_t i = off; i >= 0; i--) {
+    if (mem[i] == cha) return i;
+  }
+  return -1; 
 }
