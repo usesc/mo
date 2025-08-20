@@ -1,5 +1,5 @@
-#ifndef VI_LINE_H
-#define VI_LINE_H 1
+#ifndef VI_BYCT_H
+#define VI_BYCT_H 1
 
 #include <immintrin.h>
 #include <sys/mman.h>
