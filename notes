@@ -14,6 +14,8 @@ watch uzaki chan wants to hang out
 or watch advanced C course on youtube
 - the classic c programmers dilemma 
 
+idea: you cant exit if youve made changes that havent been saved, feature can be disabled in config or by commandline. 
+
 wanted features:
 generate a hash of the whole file: MD5, SHA256, SHA512
 real encryption
