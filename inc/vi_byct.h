@@ -12,7 +12,8 @@
 
 #include <vi_core.h>
 
-#define VI_DIMRET 4096
+/* vi min shared load per processor */
+#define VI_SHLOAPRO 256
 
 /* vi thread handler callback */
 typedef size_t (*vi_thc)(char *, size_t, char);
