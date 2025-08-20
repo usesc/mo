@@ -2,6 +2,7 @@
 #define VI_CORE_H 1
 
 #include <sys/stat.h>
+#include <sys/mman.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
@@ -16,14 +17,18 @@
 #define vi_strlen(s)            __builtin_strlen(s)
 #define vi_popcnt(a)            __builtin_popcount(a)
 
-#define VILOGERR 1
-#if VILOGERR
+#if DEBUG
 #define vi_errors(s) perror(s)
 #define vi_assert(x) assert(x)
+#define vi_nassert(x) assert(!x)
 #else
 #define vi_errors(s) 
 #define vi_assert(x)
+#define vi_nassert(x)
 #endif
+
+#define vi_fail(expr, str) do{if(expr) {vi_errors(str); vi_nassert(expr)}}while(0)
+#define vi_runc(expr, rval) do{if (expr) {return rval;}}while(0) 
 
 /* vi television struct */
 struct vi_tv {
@@ -35,12 +40,12 @@ struct vi_tv {
 
 /* vi file struct */
 struct vi_file {
-	char *      fim; /* file memory        */
-	size_t      fml; /* file memory length */
-	char *      fin; /* file name          */
-	size_t      fns; /* file name size     */
-	int         fid; /* file descriptor    */
-	struct stat sts; /* struct stat        */
+	char *      fim; /* file memory                  */
+	size_t      fem; /* file effective memory length */
+	char *      fin; /* file name                    */
+	size_t      fns; /* file name size               */
+	int         fid; /* file descriptor              */
+	struct stat sts; /* struct stat                  */
 };
 
 /* vi insert */

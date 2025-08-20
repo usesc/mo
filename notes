@@ -1,3 +1,6 @@
+TODO:
+transfer malloc operations to mmap
+
 via
 vi ascended
 visual ascended
@@ -8,6 +11,9 @@ modal editor
 
 md
 modal
+modal editor
+
+moe
 modal editor
 
 watch uzaki chan wants to hang out
@@ -119,3 +125,5 @@ struct {
 do a binary search i guess:
 "To find the line you are currently in, you do a binary search on this array to find the greatest line start offset <= your current offset."
 (talking about the array of line starts) 
+
+memsize / processors < 256, just basic count it

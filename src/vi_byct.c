@@ -1,4 +1,4 @@
-#include <vi_line.h>
+#include <vi_byct.h>
 
 /* vi count byte, basic */
 /* mem = memory, mln = memory length, byt = byte */
@@ -82,8 +82,8 @@ void *vi_pth(void *a) {
 size_t vi_ctb(char *mem, size_t mln, char byt) {
   /* nrp = N/number-of real processors */
   long nrp = sysconf(_SC_NPROCESSORS_ONLN);
-
-  if (nrp == -1 || nrp == 1 || mln < VI_DIMRET) {
+  
+  if (abs(nrp) == 1 || mln / nrp < VI_SHLOAPRO) {
     goto simple_impl;
   }
 
