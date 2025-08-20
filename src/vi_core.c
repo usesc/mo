@@ -120,8 +120,8 @@ off_t vi_dcl(const char *mem, off_t off) {
 	/* 
  	calculate decrement until newline and
  	increment, store those two values as off_t
-  	buffer+offt1 = start of line
-   	buffer+offt2 = end of line
+  buffer+offt1 = start of line
+ 	buffer+offt2 = end of line
 	delete from start of line to end
  	shift memory back where it belongs
  	*/
