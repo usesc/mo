@@ -1,4 +1,4 @@
-#include <vi_line.h>
+#include <vi_byct.h>
 
 /* vi count byte, basic */
 /* mem = memory, mln = memory length, byt = byte */
