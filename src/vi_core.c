@@ -1,5 +1,7 @@
 #include <vi_core.h>
 
+/* REDESIGN TIME, INSTEAD OF INPUT BUFFER AND OUTPUT BUFFER, JUST USE MEMORY AND RETURN END SIZE */
+
 /* vi insert */
 /* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
 static inline __attribute__((always_inline, hot))
@@ -18,13 +20,29 @@ ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsi
 	return ins+1;
 }
 
+/* vi better insert TODO: Function body, args done */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_insert2(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
+	vi_assert(mem != NULL);
+	vi_assert(off <= msz);
+	vi_assert(i <= ous);
+
+	if (pos > ins || ins+1 > ous) return -1;
+
+	if (out != inp) vi_memcpy(out, inp, ins);
+	vi_memmov(out+pos+1, out+pos, ins-pos);
+	
+	out[pos] = cha;
+	return ins+1;
+}
+
 /* vi delete */
 /* out = output, inp = input, ins = input size, pos = position */
 static inline __attribute__((always_inline, hot))
-ssize_t vi_delete(char *out, char *inp, unsigned int ins, unsigned int pos) {
+ssize_t vi_delete(char *out, char *inp, size_t ins, unsigned int pos) {
 	vi_assert(out != NULL);
 	vi_assert(inp != NULL);
-	vi_assert(pos < ins);
+	vi_assert(pos <  ins);
 
 	if (pos >= ins) return -1; 
 
@@ -36,6 +54,22 @@ ssize_t vi_delete(char *out, char *inp, unsigned int ins, unsigned int pos) {
 
 /* vi delete two, TODO: */
 /* deletes memory from one off_t to another and shifts memory down  */
+static inline __attribute__((always_inline, hot))
+ssize_t vi_delete2(char *out, char *inp, size_t ins, unsigned int of1, unsigned int of2) {
+	vi_assert(out != NULL);	
+	vi_assert(inp != NULL);	
+	vi_assert(of1 < ins);
+	vi_assert(of2 < ins);
+
+	if (pos
+
+	o1a = inp+of1;
+	o2a = inp+of2;
+
+	
+	
+	return 
+}	
 
 /* vi init vi file */
 /* vif = vi file, fin = filename, fla = flags, mod = mode */
