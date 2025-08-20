@@ -16,8 +16,7 @@
 #define vi_strlen(s)            __builtin_strlen(s)
 #define vi_popcnt(a)            __builtin_popcount(a)
 
-#define VILOGERR 1
-#if VILOGERR
+#if DEBUG
 #define vi_errors(s) perror(s)
 #define vi_assert(x) assert(x)
 #define vi_nassert(x) assert(!x)
