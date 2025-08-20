@@ -40,12 +40,12 @@ struct vi_tv {
 
 /* vi file struct */
 struct vi_file {
-	char *      fim; /* file memory        */
-	size_t      fml; /* file memory length */
-	char *      fin; /* file name          */
-	size_t      fns; /* file name size     */
-	int         fid; /* file descriptor    */
-	struct stat sts; /* struct stat        */
+	char *      fim; /* file memory                  */
+	size_t      fem; /* file effective memory length */
+	char *      fin; /* file name                    */
+	size_t      fns; /* file name size               */
+	int         fid; /* file descriptor              */
+	struct stat sts; /* struct stat                  */
 };
 
 /* vi insert */
