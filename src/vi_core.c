@@ -68,7 +68,7 @@ int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod) {
 }
 
 int vi_inivif_mmap(struct vi_file *vif, char *fin, int fla, mode_t mod) {
-		vif->fin = fin;
+	vif->fin = fin;
 	vif->fns = vi_strlen(fin);
 
 	vif->fid = open(fin, fla, mod);
@@ -85,9 +85,25 @@ int vi_inivif_mmap(struct vi_file *vif, char *fin, int fla, mode_t mod) {
 
 	vif->fml = vif->sts.st_size;
 
-	vif->fim = mmap();
+	/* Lets hope this part works */
+	int mmap_prot;
+
+	switch(fla) {
+		case O_RDONLY: 
+			mmap_prot = PROT_READ;
+			break;
+		case O_WRONLY:
+			mmap_prot = PROT_WRITE;
+		case O_RDWR: 
+			mmap_prot = PROT_READ | PROT_WRITE;
+			break;
+		default:
+			mmap_prot = PROT_READ;
+	}
+	/* REMEMBER TO MUNMAP THE POINTER MMAP RETURNS */
+	vif->fim = mmap(NULL, vif->fml, mmap_prot, MAP_PRIVATE, vif->fid, 0);
 	if (!vif->fim) {
-		vi_errors("malloc");
+		vi_errors("mmap");
 		close(vif->fid);
 		return -1;
 	}
@@ -125,8 +141,8 @@ void vi_freevif_mmap(struct vi_file *vif) {
 	if (!vif) return;
 
 	if (vif->fim) {
-		free(vif->fim);
-    	vif->fim = NULL;
+		munmap(vif->fim, vif->fml);
+		vif->fim = NULL;
   	}
 
   	if (vif->fid >= 0) {
