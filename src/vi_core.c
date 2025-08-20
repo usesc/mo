@@ -1,6 +1,7 @@
 #include <vi_core.h>
 
 /* REDESIGN TIME, INSTEAD OF INPUT BUFFER AND OUTPUT BUFFER, JUST USE MEMORY AND RETURN END SIZE */
+/* REPLACE VI_ASSERTS WITH VI_FAILS */
 
 /* vi insert */
 /* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
@@ -24,10 +25,10 @@ ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsi
 /* insert memory at a offset for n bytes */
 static inline __attribute__((always_inline, hot))
 ssize_t vi_insert2(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
-	vi_assert(mm1 != NULL);
-	vi_assert(mm2 != NULL);
-	vi_assert(off <= m1s);
-	vi_assert(m2s+off <= m1s);
+	vi_fail(!mm1, "invalid memory");
+	vi_fail(!mm2, "invalid memory");
+	vi_fail(off >= m1s, "offset overflow");
+	vi_fail(m2s+off > m1s, "buffer overflow");
 
 	if (pos > ins || ins+1 > ous) return -1;
 
