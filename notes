@@ -125,3 +125,5 @@ struct {
 do a binary search i guess:
 "To find the line you are currently in, you do a binary search on this array to find the greatest line start offset <= your current offset."
 (talking about the array of line starts) 
+
+memsize / processors < 256, just basic count it
