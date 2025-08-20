@@ -20,6 +20,8 @@
 #if VILOGERR
 #define vi_errors(s) perror(s)
 #define vi_assert(x) assert(x)
+#define vi_nassert(x) assert(!x)
+#define vi_fail(expr, str) do{if(expr) {vi_errors(str); vi_nassert(expr)}}while(0)
 #else
 #define vi_errors(s) 
 #define vi_assert(x)
