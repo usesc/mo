@@ -4,75 +4,29 @@
 /* REPLACE VI_ASSERTS WITH VI_FAILS */
 
 /* vi insert */
-/* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
-static inline __attribute__((always_inline, hot))
-ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsigned int pos, char cha) {
-	vi_assert(out != NULL);
-	vi_assert(inp != NULL);
-	vi_assert(pos <= ins);
-	vi_assert(ins+1 <= ous);
-
-	if (pos > ins || ins+1 > ous) return -1;
-
-	if (out != inp) vi_memcpy(out, inp, ins);
-	vi_memmov(out+pos+1, out+pos, ins-pos);
-	
-	out[pos] = cha;
-	return ins+1;
-}
-
-/* vi better insert TODO: Function body, args done */
-/* insert memory at a offset for n bytes */
+/* mm1 = memory 1, m1s = memory 1 size, mm2 = memory 2, m2s = memory 2 size, off = offset */
 static inline __attribute__((always_inline, hot))
 ssize_t vi_insert2(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
-	vi_fail(!mm1, "invalid memory");
-	vi_fail(!mm2, "invalid memory");
-	vi_fail(off >= m1s, "offset overflow");
-	vi_fail(m2s+off > m1s, "buffer overflow");
+	vi_runc(!mm1 || !mm2, -1);
+	vi_runc(off >= m1s, -1);
+	vi_runc(m2s > m1s-off, -1);
 
-	if (pos > ins || ins+1 > ous) return -1;
-
-	if (out != inp) vi_memcpy(out, inp, ins);
-	vi_memmov(out+pos+1, out+pos, ins-pos);
+	vi_memmov(mm1+off+m2s, mm1+off, m1s-off);
+	vi_memcpy(mm1+off, mm2, m2s);
 	
-	out[pos] = cha;
-	return ins+1;
+	return m1s+m2s;
 }
-
 /* vi delete */
-/* out = output, inp = input, ins = input size, pos = position */
+/* mem = memory, msz = memory size, off = offset, byt = N bytes */
 static inline __attribute__((always_inline, hot))
-ssize_t vi_delete(char *out, char *inp, size_t ins, unsigned int pos) {
-	vi_assert(out != NULL);
-	vi_assert(inp != NULL);
-	vi_assert(pos <  ins);
+ssize_t vi_delete(char *mem, size_t msz, size_t off, size_t byt) {
+	vi_runc(!mem, -1);
+	vi_runc(off >= msz, -1);
+	vi_runc(byt > msz-off, -1);
 
-	if (pos >= ins) return -1; 
-
-	if (out != inp) vi_memcpy(out, inp, ins);
-	vi_memmov(out+pos, out+pos+1, ins-pos-1);
-	
-	return ins-1;
+	vi_memmov(mem+off, mem+off+byt, msz-off-byt);
+	return msz-byt;
 }
-
-/* vi delete two, TODO: */
-/* deletes memory from one off_t to another and shifts memory down  */
-static inline __attribute__((always_inline, hot))
-ssize_t vi_delete2(char *out, char *inp, size_t ins, unsigned int of1, unsigned int of2) {
-	vi_assert(out != NULL);	
-	vi_assert(inp != NULL);	
-	vi_assert(of1 < ins);
-	vi_assert(of2 < ins);
-
-	if (pos
-
-	o1a = inp+of1;
-	o2a = inp+of2;
-
-	
-	
-	return 
-}	
 
 /* vi init vi file */
 /* vif = vi file, fin = filename, fla = flags, mod = mode */
