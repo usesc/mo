@@ -27,6 +27,7 @@
 #endif
 
 #define vi_fail(expr, str) do{if(expr) {vi_errors(str); vi_nassert(expr)}}while(0)
+#define vi_runc(expr, rval) do{if (expr) {return rval;}}while(0) 
 
 /* vi television struct */
 struct vi_tv {
