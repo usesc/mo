@@ -1,3 +1,6 @@
+TODO:
+transfer malloc operations to mmap
+
 via
 vi ascended
 visual ascended
