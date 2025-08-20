@@ -21,11 +21,13 @@ ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsi
 }
 
 /* vi better insert TODO: Function body, args done */
+/* insert memory at a offset for n bytes */
 static inline __attribute__((always_inline, hot))
 ssize_t vi_insert2(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
-	vi_assert(mem != NULL);
-	vi_assert(off <= msz);
-	vi_assert(i <= ous);
+	vi_assert(mm1 != NULL);
+	vi_assert(mm2 != NULL);
+	vi_assert(off <= m1s);
+	vi_assert(m2s+off <= m1s);
 
 	if (pos > ins || ins+1 > ous) return -1;
 
