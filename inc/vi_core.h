@@ -49,15 +49,15 @@ struct vi_file {
 	struct stat sts; /* struct stat                  */
 };
 
-/* vi insert */
-/* out = output, ous = output size, inp = input, ins = input size, pos = position, cha = char */
+/* vi insert n bytes after offset */
+/* mm1 = memory 1, m1s = memory 1 size, mm2 = memory 2, m2s = memory 2 size, off = offset */
 static inline __attribute__((always_inline, hot))
-ssize_t vi_insert(char *out, unsigned int ous, char *inp, unsigned int ins, unsigned int pos, char cha);
+ssize_t vi_insert(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off);
 
-/* vi delete */
-/* out = output, inp = input, ins = input size, pos = position */
+/* vi delete n bytes after offset */
+/* mem = memory, msz = memory size, off = offset, byt = N bytes */
 static inline __attribute__((always_inline, hot))
-ssize_t vi_delete(char *out, char *inp, unsigned int ins, unsigned int pos);
+ssize_t vi_delete(char *mem, size_t msz, size_t off, size_t byt);
 
 /* vi init vi file */
 /* vif = vi file, fin = filename, fla = flags, mod = mode */
@@ -66,6 +66,8 @@ int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod);
 /* vi free file */
 /* vif = vi file */
 void vi_freevif(struct vi_file *vif);
+
+int vi_revif(struct vi_file *vif, ssize_t del);
 
 /* vi increment until byte */
 /* mem = memory, mln = memory length, cha = char */
@@ -76,5 +78,10 @@ off_t vi_iub(const char *mem, size_t mln, char cha);
 /* mem = memory, off = memory offset, cha = char */
 static inline __attribute__((always_inline, hot))
 off_t vi_dub(const char *mem, off_t off, char cha);
+
+/* vi check if printable character */
+/* cha = char */
+static inline __attribute__((always_inline, hot))
+unsigned char vi_cip(char cha);
 
 #endif

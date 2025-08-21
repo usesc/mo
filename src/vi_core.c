@@ -3,7 +3,7 @@
 /* vi insert n bytes after offset */
 /* mm1 = memory 1, m1s = memory 1 size, mm2 = memory 2, m2s = memory 2 size, off = offset */
 static inline __attribute__((always_inline, hot))
-ssize_t vi_insert2(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
+ssize_t vi_insert(char *mm1, size_t m1s, char *mm2, size_t m2s, size_t off) {
 	vi_runc(!mm1 || !mm2, -1);
 	vi_runc(off >= m1s, -1);
 	vi_runc(m2s > m1s-off, -1);
