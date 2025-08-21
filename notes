@@ -33,6 +33,8 @@ idea: you cant exit if youve made changes that havent been saved, feature can be
 
 idea: include traversal c language feature.
 
+idea: Use TOMLC99 to implement configs
+
 int skip_eol(char *a)
   use memchr to find first newline
   occurence, position specifically
