@@ -29,6 +29,10 @@ delete whole word
 delete line
 splash screen
 
+idea: you cant exit if youve made changes that havent been saved, feature can be disabled in config or by commandline. 
+
+idea: include traversal c language feature.
+
 int skip_eol(char *a)
   use memchr to find first newline
   occurence, position specifically
