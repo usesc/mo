@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-#include <vi_line.h>
+#include <vi_byct.h>
 
 #define vi_memcpy(dest, src, n) __builtin_memcpy(dest, src, n)
 #define vi_memmov(dest, src, n) __builtin_memmove(dest, src, n)
@@ -42,6 +42,7 @@ struct vi_tv {
 struct vi_file {
 	char *      fim; /* file memory                  */
 	size_t      fem; /* file effective memory length */
+	size_t      frm; /* file real memory length      */
 	char *      fin; /* file name                    */
 	size_t      fns; /* file name size               */
 	int         fid; /* file descriptor              */

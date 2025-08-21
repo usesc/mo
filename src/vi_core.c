@@ -1,8 +1,5 @@
 #include <vi_core.h>
 
-/* REDESIGN TIME, INSTEAD OF INPUT BUFFER AND OUTPUT BUFFER, JUST USE MEMORY AND RETURN END SIZE */
-/* REPLACE VI_ASSERTS WITH VI_FAILS */
-
 /* vi insert n bytes after offset */
 /* mm1 = memory 1, m1s = memory 1 size, mm2 = memory 2, m2s = memory 2 size, off = offset */
 static inline __attribute__((always_inline, hot))
@@ -47,69 +44,18 @@ int vi_inivif(struct vi_file *vif, char *fin, int fla, mode_t mod) {
 		return -1;
 	}
 
-	vif->fml = vif->sts.st_size;
+	vif->fem = vif->sts.st_size;
+	vif->frm = vif->sts.st_size;
 
-	vif->fim = malloc(vif->fml);
+	vif->fim = malloc(vif->frm);
 	if (!vif->fim) {
 		vi_errors("malloc");
 		close(vif->fid);
 		return -1;
 	}
 
-	ssize_t n = read(vif->fid, vif->fim, vif->fml);
-	if (n != vif->fml) {
-		vi_errors("read");
-		close(vif->fid);
-		free(vif->fim);
-		return -1;
-	}
-	
-	return 0;
-}
-
-int vi_inivif_mmap(struct vi_file *vif, char *fin, int fla, mode_t mod) {
-	vif->fin = fin;
-	vif->fns = vi_strlen(fin);
-
-	vif->fid = open(fin, fla, mod);
-	if (vif->fid  == -1) {
-		vi_errors("open");
-		return -1;
-	}
-
-	if (fstat(vif->fid , &vif->sts) == -1) {
-		vi_errors("fstat");
-		close(vif->fid);
-		return -1;
-	}
-
-	vif->fml = vif->sts.st_size;
-
-	/* Lets hope this part works */
-	int mmap_prot;
-
-	switch(fla) {
-		case O_RDONLY: 
-			mmap_prot = PROT_READ;
-			break;
-		case O_WRONLY:
-			mmap_prot = PROT_WRITE;
-		case O_RDWR: 
-			mmap_prot = PROT_READ | PROT_WRITE;
-			break;
-		default:
-			mmap_prot = PROT_READ;
-	}
-	/* REMEMBER TO MUNMAP THE POINTER MMAP RETURNS */
-	vif->fim = mmap(NULL, vif->fml, mmap_prot, MAP_PRIVATE, vif->fid, 0);
-	if (!vif->fim) {
-		vi_errors("mmap");
-		close(vif->fid);
-		return -1;
-	}
-
-	ssize_t n = read(vif->fid, vif->fim, vif->fml);
-	if (n != vif->fml) {
+	ssize_t n = read(vif->fid, vif->fim, vif->frm);
+	if (n != vif->frm) {
 		vi_errors("read");
 		close(vif->fid);
 		free(vif->fim);
@@ -126,31 +72,33 @@ void vi_freevif(struct vi_file *vif) {
 
 	if (vif->fim) {
 		free(vif->fim);
-    	vif->fim = NULL;
-  	}
+    vif->fim = NULL;
+  }
 
-  	if (vif->fid >= 0) {
-    	close(vif->fid);
-    	vif->fid = -1;
-  	}
+  if (vif->fid >= 0) {
+    close(vif->fid);
+  	vif->fid = -1;
+  }
 	
-  	memset(vif, 0, sizeof(*vif));
+	memset(vif, 0, sizeof(*vif));
 }
 
-void vi_freevif_mmap(struct vi_file *vif) {
-	if (!vif) return;
+int vi_revif(struct vi_file *vif, ssize_t del) {
+	vi_runc(!vif->fim, -1);
+	vi_runc(vif->fem+del<vif->frm, 0);
 
-	if (vif->fim) {
-		munmap(vif->fim, vif->fml);
-		vif->fim = NULL;
-  	}
+	size_t nsz = vif->frm ? vif->frm : 64;
+	while (nsz < vif->fem+del) {
+		nsz += nsz;
+	}
 
-  	if (vif->fid >= 0) {
-    	close(vif->fid);
-    	vif->fid = -1;
-  	}
-	
-  	memset(vif, 0, sizeof(*vif));
+	char *tmp = realloc(vif->fim, nsz);
+	if (!tmp) return -1;
+
+	vif->frm = nsz;
+	vif->fim = tmp;
+
+	return 0;
 }
 
 /* vi increment until byte */
@@ -160,7 +108,7 @@ off_t vi_iub(const char *mem, size_t mln, char cha) {
 	for (off_t i = 0; i < mln; i++) {
 		if (mem[i] == cha) return i;
 	}
-  	return -1; 
+  return -1; 
 }
 
 /* vi decrement until byte */
