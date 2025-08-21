@@ -133,6 +133,7 @@ off_t vi_dcl(const char *mem, off_t off) {
 	delete from start of line to end
  	shift memory back where it belongs
  	*/
+	
 }
 
 /* vi check if printable character */

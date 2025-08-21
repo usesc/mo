@@ -54,6 +54,11 @@ check if file has lines longer than 65536 bytes
 if no - line lengths are u shorts
 if yes - line lengths are u ints
 
+supposed list:
+Gap buffer for small files
+Piece table for big files
+Ropes for huge files
+
 modes:
 normal
 real terminal
